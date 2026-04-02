@@ -1,0 +1,14 @@
+{
+  "seed": 2,
+  "total_timesteps": 50000,
+  "episodes_finished": 3739,
+  "wall_clock_seconds": 22215.40221619606,
+  "last_100_episode_reward_mean": 12.90228874539536,
+  "last_100_crash_rate": 0.86,
+  "best_eval_reward": 16.129846572875977,
+  "best_eval_step": 40000,
+  "best_eval_episode": 3033,
+  "best_model_path": "C:\\Users\\Guillaume PORET\\PycharmProjects\\pythonProject\\Central\\RL\\rl_project\\checkpoints\\dqn\\seed_2\\dqn_best.pt",
+  "eval_every": 10000,
+  "eval_episodes": 10
+}

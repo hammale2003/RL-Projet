@@ -1,0 +1,9 @@
+{
+  "seed": 0,
+  "num_episodes": 50,
+  "reward_mean": 18.607318878173828,
+  "reward_std": 5.693646430969238,
+  "length_mean": 25.0,
+  "length_std": 7.838366985321045,
+  "crash_rate": 0.30000001192092896
+}
