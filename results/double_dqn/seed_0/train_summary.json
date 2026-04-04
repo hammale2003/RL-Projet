@@ -1,0 +1,16 @@
+{
+  "seed": 0,
+  "variant": "double_dqn",
+  "total_timesteps": 200000,
+  "episodes_finished": 8244,
+  "wall_clock_seconds": 55549.62087893486,
+  "last_100_episode_reward_mean": 19.00443755099051,
+  "last_100_crash_rate": 0.72,
+  "best_eval_reward": 21.589596430460613,
+  "best_eval_step": 190000,
+  "best_eval_episode": 7752,
+  "best_model_path": "/teamspace/studios/this_studio/rl-projet/checkpoints/double_dqn/seed_0/double_dqn_seed0_best.pt",
+  "eval_every": 10000,
+  "eval_episodes": 10,
+  "eval_num_seeds": 3
+}

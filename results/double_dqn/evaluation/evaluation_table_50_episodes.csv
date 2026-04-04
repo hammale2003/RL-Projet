@@ -1,0 +1,2 @@
+seed,num_episodes,num_eval_env_seeds,reward_mean,reward_std,length_mean,length_std,crash_rate
+0,50,3,19.412007013956707,1.618595867110086,20.15999984741211,9.116876602172852,0.6866666674613953
