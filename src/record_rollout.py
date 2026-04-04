@@ -22,7 +22,9 @@ def make_video_env(seed: int, video_duration: int | None, fps: int) -> gym.Env:
     return env
 
 
-def record_custom(model_path: Path, output_dir: Path, seed: int, video_duration: int | None, fps: int) -> None:
+def record_custom(
+    model_path: Path, output_dir: Path, seed: int, video_duration: int | None, fps: int, device: str = "cpu"
+) -> None:
     base_env = make_video_env(seed=seed, video_duration=video_duration, fps=fps)
     model_name = model_path.parent.name
 
@@ -33,7 +35,7 @@ def record_custom(model_path: Path, output_dir: Path, seed: int, video_duration:
         name_prefix=f"{model_name}_eval_{seed}",
     )
 
-    agent = DQNAgent.load(model_path)
+    agent = DQNAgent.load(model_path, device=device)
 
     obs, _ = env.reset(seed=seed)
     obs = flatten_obs(obs)
@@ -48,7 +50,9 @@ def record_custom(model_path: Path, output_dir: Path, seed: int, video_duration:
     env.close()
 
 
-def record_double_dqn(model_path: Path, output_dir: Path, seed: int, video_duration: int | None, fps: int) -> None:
+def record_double_dqn(
+    model_path: Path, output_dir: Path, seed: int, video_duration: int | None, fps: int, device: str = "cpu"
+) -> None:
     base_env = make_video_env(seed=seed, video_duration=video_duration, fps=fps)
     model_name = model_path.parent.name
 
@@ -59,7 +63,7 @@ def record_double_dqn(model_path: Path, output_dir: Path, seed: int, video_durat
         name_prefix=f"{model_name}_eval_{seed}",
     )
 
-    agent = DoubleDQNAgent.load(model_path)
+    agent = DoubleDQNAgent.load(model_path, device=device)
 
     obs, _ = env.reset(seed=seed)
     obs = flatten_obs(obs)
@@ -129,17 +133,43 @@ if __name__ == "__main__":
     parser.add_argument("--seeds", type=int, nargs="+", required=True)
     parser.add_argument("--video-duration", type=int, default=80)
     parser.add_argument("--fps", type=int, default=5)
+    parser.add_argument(
+        "--output-dir",
+        type=str,
+        default=None,
+        help="Folder for mp4 files (default: <project>/videos/<model-type>).",
+    )
+    parser.add_argument(
+        "--device",
+        type=str,
+        default="cpu",
+        help="Torch device for loading DQN checkpoints (cpu or cuda).",
+    )
 
     args = parser.parse_args()
 
-    out_dir = ROOT / "videos" / args.model_type
+    out_dir = Path(args.output_dir) if args.output_dir else ROOT / "videos" / args.model_type
     out_dir.mkdir(parents=True, exist_ok=True)
 
     for seed in args.seeds:
         if args.model_type == "custom_dqn":
-            record_custom(Path(args.model_path), out_dir, seed=seed, video_duration=args.video_duration, fps=args.fps)
+            record_custom(
+                Path(args.model_path),
+                out_dir,
+                seed=seed,
+                video_duration=args.video_duration,
+                fps=args.fps,
+                device=args.device,
+            )
         elif args.model_type == "double_dqn":
-            record_double_dqn(Path(args.model_path), out_dir, seed=seed, video_duration=args.video_duration, fps=args.fps)
+            record_double_dqn(
+                Path(args.model_path),
+                out_dir,
+                seed=seed,
+                video_duration=args.video_duration,
+                fps=args.fps,
+                device=args.device,
+            )
         elif args.model_type == "sb3_dqn":
             record_sb3(Path(args.model_path), out_dir, seed=seed, video_duration=args.video_duration, fps=args.fps)
         else:
