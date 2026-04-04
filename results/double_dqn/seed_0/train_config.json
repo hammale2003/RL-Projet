@@ -1,0 +1,19 @@
+{
+  "seed": 0,
+  "device": "cuda",
+  "resumed_from": "/teamspace/studios/this_studio/rl-projet/checkpoints/double_dqn/seed_0/double_dqn_seed0_step_50000.pt",
+  "gamma": 0.99,
+  "learning_rate": 0.001,
+  "batch_size": 128,
+  "buffer_size": 100000,
+  "learning_starts": 5000,
+  "train_frequency": 4,
+  "target_update_frequency": 1000,
+  "gradient_steps": 1,
+  "epsilon_start": 1.0,
+  "epsilon_end": 0.05,
+  "epsilon_decay_steps": 80000,
+  "hidden_dim1": 256,
+  "hidden_dim2": 256,
+  "max_grad_norm": 10.0
+}

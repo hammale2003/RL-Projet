@@ -1,0 +1,25 @@
+{
+  "seed": 0,
+  "train_seed": 0,
+  "num_episodes_per_eval": 50,
+  "num_eval_env_seeds": 3,
+  "eval_env_seeds": [
+    10001,
+    20002,
+    30003
+  ],
+  "reward_mean": 19.412007013956707,
+  "reward_std_across_eval_env_seeds": 1.618595867110086,
+  "per_eval_env_reward_means": [
+    17.240205764770508,
+    19.871618270874023,
+    21.124197006225586
+  ],
+  "crash_rate_mean": 0.6866666674613953,
+  "crash_rate_std_across_eval_env_seeds": 0.05734882892380102,
+  "num_episodes": 150,
+  "reward_std": 1.618595867110086,
+  "length_mean": 20.15999984741211,
+  "length_std": 9.116876602172852,
+  "crash_rate": 0.6866666674613953
+}

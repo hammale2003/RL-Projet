@@ -1,0 +1,10 @@
+{
+  "model_type": "double_dqn",
+  "output_subdir": "evaluation",
+  "num_episodes_per_eval_env": 50,
+  "num_eval_env_seeds": 3,
+  "num_train_seeds": 1,
+  "reward_mean_across_seeds": 19.412007013956707,
+  "reward_std_across_seeds": 0.0,
+  "crash_rate_mean_across_seeds": 0.6866666674613953
+}

@@ -31,7 +31,9 @@ rl_project_p1_final/
     ├── models.py
     ├── replay_buffer.py
     ├── dqn_agent.py
+    ├── double_dqn_agent.py
     ├── train_dqn.py
+    ├── train_double_dqn.py
     ├── train_sb3.py
     ├── evaluate.py
     ├── plot_results.py
@@ -45,7 +47,16 @@ cd src
 python train_dqn.py --seeds 0 1 2 --total-timesteps 50000 --eval-every 10000 --eval-episodes 10 --device cuda
 ```
 
-## 4. Entraîner le modèle Stable-Baselines3
+## 4. Entraîner Double DQN (maison)
+
+```bash
+cd src
+python train_double_dqn.py --seeds 0 1 2 --total-timesteps 50000 --eval-every 10000 --eval-episodes 10 --device cuda
+```
+
+Checkpoints : `checkpoints/double_dqn/seed_*/double_dqn_best.pt`.
+
+## 5. Entraîner le modèle Stable-Baselines3
 
 Ici j'ai choisi **SB3 DQN** pour garder une comparaison propre avec le DQN maison.
 
@@ -54,7 +65,7 @@ cd src
 python train_sb3.py --seeds 0 1 2 --total-timesteps 50000 --eval-every 10000 --eval-episodes 10 --checkpoint-every 50000 --device cuda
 ```
 
-## 5. Évaluation officielle sur 50 épisodes
+## 6. Évaluation officielle sur 50 épisodes
 
 ### Éval DQN maison
 
@@ -65,6 +76,13 @@ python evaluate.py --model-type custom_dqn --model-template ../checkpoints/dqn/s
 python evaluate.py --model-type custom_dqn --model-template ../checkpoints/dqn/seed_2/dqn_best.pt --seeds 0 1 2 --num-episodes 50 --output-subdir evaluation_model_seed_2
 ```
 
+### Éval Double DQN maison
+
+```bash
+cd src
+python evaluate.py --model-type double_dqn --model-template ../checkpoints/double_dqn/seed_0/double_dqn_best.pt --seeds 0 --num-episodes 50 --output-subdir evaluation
+```
+
 ### Éval SB3 DQN
 
 ```bash
@@ -72,7 +90,7 @@ cd src
 python evaluate.py --model-type sb3_dqn --model-template ../checkpoints/sb3_dqn/seed_0/best_model/best_model.zip --seeds 0 1 2 --num-episodes 50 --output-subdir evaluation_model_seed_0
 ```
 
-## 6. Courbes d'entraînement
+## 7. Courbes d'entraînement
 
 ```bash
 cd src
@@ -83,7 +101,7 @@ python plot_results.py --seed 0 --model both
 
 Les figures seront sauvegardées dans `results/plots/`.
 
-## 7. Enregistrer un rollout vidéo
+## 8. Enregistrer un rollout vidéo
 
 ### DQN maison
 
@@ -100,4 +118,3 @@ python record_rollout.py --model-type sb3_dqn --model-path ../checkpoints/sb3_dq
 ```
 
 Les vidéos seront dans `videos/`.
->>>>>>> 0ed9f23 (Initial commit)
