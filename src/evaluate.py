@@ -11,6 +11,7 @@ from tqdm import tqdm
 
 from dqn_agent import DQNAgent
 from double_dqn_agent import DoubleDQNAgent
+from double_dqn_per_agent import DoubleDQNPERAgent
 from utils import ROOT, flatten_obs, make_env, save_csv_rows, save_json, set_global_seeds
 
 
@@ -45,6 +46,32 @@ def evaluate_double_dqn(model_path: Path, seed: int, num_episodes: int) -> list[
     agent = DoubleDQNAgent.load(model_path)
     rows: list[dict[str, float | int | bool]] = []
     for ep in tqdm(range(num_episodes), desc=f"Eval DoubleDQN seed {seed}"):
+        obs, _ = env.reset(seed=seed + ep)
+        obs = flatten_obs(obs)
+        done = False
+        total_reward = 0.0
+        steps = 0
+        crashed = False
+        while not done:
+            action = agent.act_greedy(obs)
+            next_obs, reward, terminated, truncated, info = env.step(action)
+            done = terminated or truncated
+            obs = flatten_obs(next_obs)
+            total_reward += float(reward)
+            steps += 1
+            crashed = crashed or bool(
+                info.get("crashed", False) or getattr(env.unwrapped.vehicle, "crashed", False)
+            )
+        rows.append({"episode": ep, "reward": total_reward, "length": steps, "crashed": int(crashed)})
+    env.close()
+    return rows
+
+
+def evaluate_double_dqn_per(model_path: Path, seed: int, num_episodes: int) -> list[dict[str, float | int | bool]]:
+    env = make_env(seed=seed)
+    agent = DoubleDQNPERAgent.load(model_path)
+    rows: list[dict[str, float | int | bool]] = []
+    for ep in tqdm(range(num_episodes), desc=f"Eval DoubleDQN+PER seed {seed}"):
         obs, _ = env.reset(seed=seed + ep)
         obs = flatten_obs(obs)
         done = False
@@ -119,6 +146,7 @@ def evaluate_ppo(model_path: Path, seed: int, num_episodes: int) -> list[dict[st
 EVALUATORS: dict[str, Callable[[Path, int, int], list[dict[str, float | int | bool]]]] = {
     "custom_dqn": evaluate_custom,
     "double_dqn": evaluate_double_dqn,
+    "double_dqn_per": evaluate_double_dqn_per,
     "sb3_dqn": evaluate_sb3,
     "ppo_shaped": evaluate_ppo,
 }
@@ -262,7 +290,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--model-type",
         type=str,
-        choices=["custom_dqn", "double_dqn", "sb3_dqn", "ppo_shaped"],
+        choices=["custom_dqn", "double_dqn", "double_dqn_per", "sb3_dqn", "ppo_shaped"],
         required=True,
     )
     parser.add_argument("--model-template", type=str, required=True)
